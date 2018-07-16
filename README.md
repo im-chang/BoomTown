@@ -1,5 +1,12 @@
 # Boomtown 🏙
 
+Boomtown is a sharing and borrowing application that allows users to post items that they wish to share. It also allows users to request to borrow items that other users wished to share.
+
+## Technologies Used:
+    -Apollo Server
+    -GraphQL
+    -Postgres
+
 ## Server
 
 Commands must be run from the `server` directory:
