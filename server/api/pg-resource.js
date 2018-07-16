@@ -87,7 +87,7 @@ module.exports = function(postgres) {
        */
 
       const user = await postgres.query(findUserQuery)
-      return user.row[0];
+      return user.rows[0];
       // -------------------------------
     },
     async getItems(idToOmit) {
