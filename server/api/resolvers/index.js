@@ -60,9 +60,9 @@ module.exports = function(app) {
           throw new ApolloError(e)
         }
       },
-      async tags(parent, { tags }, { pgResource }, info) {
+      async tags(parent, args, { pgResource }, info) {
         try {
-          const tags = await pgResource.getTags(tags)
+          const tags = await pgResource.getTags()
           return tags
         } catch (e) {
           throw new ApolloError(e)
