@@ -73,7 +73,7 @@ module.exports = function(postgres) {
        */
 
       const findUserQuery = {
-        text: 'SELECT * FROM users where id = $1', // @TODO: Basic queries
+        text: 'SELECT * FROM users WHERE id = $1', // @TODO: Basic queries
         values: [id]
       }
 
@@ -103,7 +103,7 @@ module.exports = function(postgres) {
          *  to your query text using string interpolation
          */
 
-        text: ``,
+        text: `SELECT * FROM items`,
         values: idToOmit ? [idToOmit] : []
       })
       return items.rows
@@ -114,7 +114,7 @@ module.exports = function(postgres) {
          *  @TODO: Advanced queries
          *  Get all Items. Hint: You'll need to use a LEFT INNER JOIN among others
          */
-        text: `SELECT * FROM items where ownerid = $1`,
+        text: `SELECT * FROM items WHERE ownerid = $1`,
         values: [id]
       })
       return items.rows
@@ -125,13 +125,13 @@ module.exports = function(postgres) {
          *  @TODO: Advanced queries
          *  Get all Items. Hint: You'll need to use a LEFT INNER JOIN among others
          */
-        text: `SELECT * FROM items where borrowerid = $1`,
+        text: `SELECT * FROM items WHERE borrowerid = $1`,
         values: [id]
       })
       return items.rows
     },
     async getTags() {
-      const tags = await postgres.query(`SELECT * FROM tags`/* @TODO: Basic queries */)
+      const tags = await postgres.query(`SELECT * FROM tags`)
       return tags.rows
     },
     async getTagsForItem(id) {
