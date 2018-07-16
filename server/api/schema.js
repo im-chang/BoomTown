@@ -72,13 +72,8 @@ module.exports = gql`
 
   type Mutation {
     addItem(
-      title: String!
-      description: String!
-      imageurl: String!
-      itemowner: String!
-      tags: [String]!
-      available: Boolean!
-      borrower: String
+      item: NewItemInput!, 
+      image: Upload
     ): Item
   }
 
