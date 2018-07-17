@@ -19,7 +19,7 @@ module.exports = gql`
     title: String!
     description: String!
     imageurl: String!
-    tags: [String]!
+    tags: [Tag]!
     itemowner: User!
     created: Date
     borrower: User

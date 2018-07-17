@@ -14,6 +14,12 @@ import {
 } from '../ApolloClient/queries'
 
 const itemsData = ({ render }) => {
+  // return (
+  //   <Query query={ALL_ITEMS_QUERY} variables={{ filter: null }}>
+  //     {({ data: { items }, loading }) => 
+  //     /* what will we return? */}
+  //   </Query>
+  // );
   /**
    * @TODO: Use Apollo's <Query /> component to fetch all the items.
    *
@@ -26,6 +32,11 @@ const itemsData = ({ render }) => {
 }
 
 const userItemsData = ({ userId, render }) => {
+  // return (
+  //   <Query query={ALL_USERS_ITEMS_QUERY} variables={{ filter: null }}>
+  //     {({ data: { items }, loading }) => /* what will we return? */}
+  //   </Query>
+  // );
   /**
    * @TODO: Use Apollo's <Query /> component to fetch all of a user's items.
    *
@@ -36,6 +47,11 @@ const userItemsData = ({ userId, render }) => {
 }
 
 const tagData = ({ render }) => {
+  // return (
+  //   <Query query={ALL_TAGS_QUERY} variables={{ filter: null }}>
+  //     {({ data: { items }, loading }) => /* what will we return? */}
+  //   </Query>
+  // );
   /**
    * @TODO: Use Apollo's <Query /> component to fetch all the tags.
    */
@@ -43,6 +59,11 @@ const tagData = ({ render }) => {
 }
 
 const addItem = ({ render }) => {
+  // return (
+  //   <Query query={ALL_ITEMS_MUTATION} variables={{ filter: null }}>
+  //     {({ data: { items }, loading }) => /* what will we return? */}
+  //   </Query>
+  // );
   /**
    * @TODO: Use Apollo's <Mutation /> component to use the signup mutation.
    *

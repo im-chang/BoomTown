@@ -5,24 +5,39 @@ import gql from 'graphql-tag'
  */
 
 const ItemFields = gql`
-  fragment ItemFields on Item {
-    # @TODO: Create a fragment to query the following fields for an item:
-    #
-    # id
-    # title
-    # imageurl
-    # description
-    # created
-    # tags (id and title fields)
-    # itemowner (id, fullname, email, and bio fields)
-    # borrower (id, fullname, email, and bio fields)
-    #
+  fragment ItemFields on items {
+    
+     id
+     title
+     imageurl
+     description
+     created
+     tags {
+       id
+       title
+     }
+     itemowner {
+       id
+       fullname
+       email
+       bio
+     }
+     borrower {
+       id
+       fullname
+       email
+       bio
+     }
+    
     # See the Apollo docs for instructions on how to use fragments:
     # https://www.apollographql.com/docs/angular/features/fragments.html
   }
 `
 export const ITEM_QUERY = gql`
   query item($id: ID!) {
+    items {
+      ...ItemFields
+    }
     # @TODO: Query an item by its id and return the ItemFields fragment.
   }
   ${ItemFields}
