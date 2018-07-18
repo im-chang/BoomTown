@@ -4,7 +4,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 // @TODO: Uncomment each module as needed in your client app
 import { ApolloProvider } from 'react-apollo'
-// import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 // import { Provider as ReduxProvider } from 'react-redux'
 // -------------------------------
 
@@ -29,9 +29,9 @@ import theme from './theme'
  * @TODO: Add Routing
  *
  * Uncomment the following line when your routes are configured
- *
- * import Routes from './routes/index'
- *
+ */
+ import Routes from './routes/index'
+ /*
  * Below in your <App />, nest your <Routes /> inside of <BrowserRouter />
  * component to enable routing in your client app.
  */
@@ -69,7 +69,10 @@ const App = () => {
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
       <ApolloProvider client={client}>
-      <Home />
+      <BrowserRouter>
+      <Routes/>
+      </BrowserRouter>
+      <Home/>
       </ApolloProvider>
     </MuiThemeProvider>
   )
