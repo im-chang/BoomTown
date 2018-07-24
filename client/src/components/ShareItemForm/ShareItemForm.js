@@ -9,7 +9,8 @@ class ShareForm extends Component {
   render() {
     return (
       <div>
-        <p>This is the share form.</p>
+        <h1> Share. Borrow. Prosper. </h1>
+        
       </div>
     )
   }

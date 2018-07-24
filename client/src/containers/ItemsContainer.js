@@ -7,35 +7,26 @@ import React from 'react'
 // -------------------------------
 
 import {
-  ALL_TAGS_QUERY,
+  // ALL_TAGS_QUERY,
   ALL_ITEMS_QUERY,
-  ALL_USER_ITEMS_QUERY,
-  ADD_ITEM_MUTATION
-} from '../ApolloClient/queries'
+  // ALL_USER_ITEMS_QUERY,
+  // ADD_ITEM_MUTATION
+} from '../apollo/queries'
 
 const itemsData = ({ render }) => {
   return (
-    <Query query={ALL_ITEMS_QUERY} variables={{ filter: null }}>
-     {({ data: { items }, loading, error}) => render ({loading, error})}
+    <Query query={ALL_ITEMS_QUERY} variables={{ id: 1 }}>
+     {({ data: { items }, loading, error }) => render ({ items, loading, error })}
     </Query>
   );
-  /**
-   * @TODO: Use Apollo's <Query /> component to fetch all the items.
-   *
-   * Note: Your query will need to filter out borrowed items.
-   *
-   * The final query will ultimately filter out items that belong to the
-   * currently logged-in user once you have added authentication.
-   */
-  return undefined
 }
 
 const userItemsData = ({ userId, render }) => {
-  return (
-    <Query query={ALL_USERS_ITEMS_QUERY} variables={{ filter: null }}>
-      {({ data: { items }, loading}) => render ({loading})}
-    </Query>
-  );
+  // return (
+  //   <Query query={ALL_USERS_ITEMS_QUERY} variables={{ filter: null }}>
+  //     {({ data: { items }, loading}) => render ({loading})}
+  //   </Query>
+  // );
   /**
    * @TODO: Use Apollo's <Query /> component to fetch all of a user's items.
    *
@@ -46,11 +37,11 @@ const userItemsData = ({ userId, render }) => {
 }
 
 const tagData = ({ render }) => {
-  return (
-    <Query query={ALL_TAGS_QUERY} variables={{ filter: null }}>
-      {({ data: { tags }, loading }) => render ({loading})}
-    </Query>
-  );
+  // return (
+  //   <Query query={ALL_TAGS_QUERY} variables={{ filter: null }}>
+  //     {({ data: { tags }, loading }) => render ({loading})}
+  //   </Query>
+  // );
   /**
    * @TODO: Use Apollo's <Query /> component to fetch all the tags.
    */
@@ -60,7 +51,7 @@ const tagData = ({ render }) => {
 const addItem = ({ render }) => {
   // return (
   //   <Query query={ALL_ITEMS_MUTATION} variables={{ filter: null }}>
-  //     {({ data: { items }, loading }) => /* what will we return? */}
+  //     {({ data: { items }, loading }) => render ({loading})}
   //   </Query>
   // );
   /**
@@ -72,12 +63,10 @@ const addItem = ({ render }) => {
   return undefined
 }
 const ItemsContainer = adopt({
-  // @TODO: Uncomment each line as you write the corresponding query.
   // tagData,
   itemsData,
   // userItemsData,
   // addItem
-  // -------------------------------
 })
 
 export default ItemsContainer
