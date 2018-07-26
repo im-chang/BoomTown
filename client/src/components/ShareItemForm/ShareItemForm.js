@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { FormSpy, Form, Field } from 'react-final-form'
-import { Button, TextField, Checkbox, InputLabel } from '@material-ui/core'
+import { Button, TextField, Checkbox, InputLabel, Typography } from '@material-ui/core'
 import ItemsContainer from '../../containers/ItemsContainer'
 import { connect } from 'react-redux'
 import {
@@ -17,6 +17,7 @@ class ShareItemForm extends Component {
       selectedTags: [],
       submitted: false
     }
+    this.fileRef = React.createRef()
   }
   onSubmit = values => {
     console.log(values)
@@ -49,10 +50,10 @@ class ShareItemForm extends Component {
   }
 
   dispatchUpdate(values, tags, updateNewItem) {
-    if (!values.imageurl && this.state.fileSelected) {
-      this.getBase64Url().then(imageurl => {
+    if (!values.imageUrl && this.state.fileSelected) {
+      this.getBase64Url().then(imageUrl => {
         updateNewItem({
-          imageurl
+          imageUrl
         })
       })
     }
@@ -69,11 +70,41 @@ class ShareItemForm extends Component {
     })
   }
   
+  handleImageSelect = event => {
+    this.setState({ fileSelected: event.target.files[0] })
+    console.log(event.target.files[0])
+  }
+  
+  async saveItem(values, tags, addItem) {
+    const {
+      validity,
+      files: [file]
+    } = this.fileInput.current
+
+    if (!validity.valid || file) return; 
+
+      try {
+        const itemData = {
+          ...values,
+          tags: this.applyTags(tags)
+        }
+        await addItem.mutation({
+          variables: {
+            item: itemData,
+            image: file,
+          }
+        })
+        this.setState({ done: true })
+      } catch(e) {
+        console.log(e)
+      }
+}
+
   render() {
-    const { resetImage, updateNewItem, resetNewItem } = this.props
+    const { classes, resetImage, updateNewItem, resetNewItem } = this.props
     return (
       <ItemsContainer>
-              {({ tagData: { tags, loading, error } }) => {
+              {({ addItem, tagData: { tags, loading, error } }) => {
                 if (loading) {
                   return 'Content Loading...'
                 }
@@ -95,11 +126,30 @@ class ShareItemForm extends Component {
                 return ''
               }}
             />
-            <Field
-              render={({ input, meta }) => (
-                <Button variant="contained" color="primary">
-                  Select an image
-                </Button>
+            <Typography variant="display1">
+              Share. Borrow. Prosper.
+            </Typography>
+            <Field 
+              name="imageurl"
+              render={({input, meta}) => (
+                <Fragment>
+                  <Button 
+                    color="primary"
+                    variant="contained"
+                    onClick={() => {
+                    this.fileRef.current.click()
+                  }}
+                  >
+                    Select an image
+                  </Button>
+                  <input
+                    onChange= {e => this.handleImageSelect(e)}
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    ref= {this.fileRef}
+                    />
+                </Fragment>
               )}
             />
             <Field name="Title">
@@ -122,6 +172,7 @@ class ShareItemForm extends Component {
                     type="checkbox"
                     key= {tag.id}
                     value={JSON.stringify(tag)}
+                    
                   >
                     {({ input, meta }) => (
                       <InputLabel key={tag.id}>
@@ -134,6 +185,7 @@ class ShareItemForm extends Component {
                   </Field>
                 ))
               }}
+
             <Field
               render={({ input, meta }) => (
                 <Button type="submit" variant="contained" color="primary">
@@ -151,6 +203,7 @@ class ShareItemForm extends Component {
   )
 }
 }
+
 
 const mapDispatchToProps = dispatch => ({
   updateNewItem(item) {

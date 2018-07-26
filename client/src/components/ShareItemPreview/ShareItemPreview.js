@@ -1,4 +1,4 @@
-import ItemCard from "../ItemCard/ItemCard";
+import ItemCard from "../ItemCard";
 import { connect } from 'react-redux';
 import React from 'react';
 
@@ -9,7 +9,7 @@ const ShareItemPreview = props => {
 
 const mapStatetoProps = state => {
     return {
-        shareItemPreview: state.ShareItemPreview
+        shareItemPreview: state.shareItemPreview
     }
 }
 

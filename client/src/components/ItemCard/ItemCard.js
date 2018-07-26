@@ -7,7 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-// import { CardHeader } from '@material-ui/core';
+import { CardHeader } from '@material-ui/core';
+import Image from 'material-ui-image'
 // import Avatar from '@material-ui/core/Avatar';
 const styles = {
   card: {
@@ -19,9 +20,10 @@ const styles = {
   },
 };
 
+
 class ItemCard extends Component {
   render() {
-  const { classes, item } = this.props;
+  const { classes, item } = this.props
   return (
     <div>
       <Card className={classes.card}>
@@ -29,6 +31,7 @@ class ItemCard extends Component {
           className={classes.media}
           image={item.imageUrl}
           title={item.title}
+          key={item.id}
         />
         <CardContent>
         <Typography
@@ -40,10 +43,7 @@ class ItemCard extends Component {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small" color="primary">
-            Share
-          </Button>
-          <Button size="small" color="primary">
+          <Button  color="secondary">
             Borrow
           </Button>
         </CardActions>

@@ -10,7 +10,7 @@ import {
   ALL_TAGS_QUERY,
   ALL_ITEMS_QUERY,
   // ALL_USER_ITEMS_QUERY,
-  // ADD_ITEM_MUTATION
+  ADD_ITEM_MUTATION
 } from '../apollo/queries'
 
 const itemsData = ({ render }) => {
@@ -47,24 +47,24 @@ const tagData = ({ render }) => {
 }
 
 const addItem = ({ render }) => {
-  // return (
-  //   <Query query={ALL_ITEMS_MUTATION} variables={{ filter: null }}>
-  //     {({ data: { items }, loading }) => render ({loading})}
-  //   </Query>
-  // );
-  /**
-   * @TODO: Use Apollo's <Mutation /> component to use the signup mutation.
-   *
-   * Note: Be sure to use `refetchQueries` to refresh Apollo's cache with the
-   * latest items for the user.
-   */
-  return undefined
+  return (
+
+  <Mutation
+    mutation={ADD_ITEM_MUTATION}
+  >
+    {(mutation, { data, error, loading }) =>
+      render({ mutation, data, error, loading })  
+  }
+  </Mutation>
+  );
+
+ 
 }
 const ItemsContainer = adopt({
   tagData,
   itemsData,
   // userItemsData,
-  // addItem
+  addItem
 })
 
 export default ItemsContainer
