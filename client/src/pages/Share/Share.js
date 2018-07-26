@@ -8,7 +8,7 @@ import styles from './styles'
 const Share = ({ classes }) => {
   return (
     <div>
-      <ShareItemForm />
+      <ShareItemForm/>
       <p>
         This is the share page located at <code>/share</code>.
       </p>

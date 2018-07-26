@@ -18,6 +18,9 @@ function setCookie({ tokenName, token, res }) {
    */
   // Refactor this method with the correct configuration values.
   res.cookie(tokenName, token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 1000 * 60 * 60 * 2 //2h
     // @TODO: Supply the correct configuration values for our cookie here
   })
   // -------------------------------
@@ -25,6 +28,7 @@ function setCookie({ tokenName, token, res }) {
 
 function generateToken(user, secret) {
   const { id, email, fullname, bio } = user // Omit the password from the token
+   
   /**
    *  @TODO: Authentication - Server
    *
@@ -35,7 +39,11 @@ function generateToken(user, secret) {
    *  which can be decoded using the app secret to retrieve the stateless session.
    */
   // Refactor this return statement to return the cryptographic hash (the Token)
-  return ''
+  return  jwt.sign(
+    {
+    user: user
+
+  }, secret, { expiresIn: '1h' });
   // -------------------------------
 }
 
@@ -43,19 +51,7 @@ module.exports = function(app) {
   return {
     async signup(parent, args, context) {
       try {
-        /**
-         * @TODO: Authentication - Server
-         *
-         * Storing passwords in your project's database requires some basic security
-         * precautions. If someone gains access to your database, and passwords
-         * are stored in 'clear-text' your users accounts immediately compromised.
-         *
-         * The solution is to create a cryptographic hash of the password provided,
-         * and store that instead. The password can be decoded using the original password.
-         */
-        // @TODO: Use bcrypt to generate a cryptographic hash to conceal the user's password before storing it.
-        const hashedPassword = ''
-        // -------------------------------
+        const hashedPassword = await bcrypt.hash(args.user.password, 10)
 
         const user = await context.pgResource.createUser({
           fullname: args.user.fullname,
@@ -65,32 +61,21 @@ module.exports = function(app) {
 
         setCookie({
           tokenName: app.get('JWT_COOKIE_NAME'),
-          token: generateToken(user, app.get('JWT_SECRET')),
+          token: generateToken(args.user, app.get('JWT_SECRET')),
           res: context.req.res
         })
 
-        return {
-          id: user.id
-        }
+        return true
+
       } catch (e) {
         throw new AuthenticationError(e)
       }
     },
 
-    async login(parent, args, context) {
+    async login(parent, { user: { email, password } }, { pgResource, req}) {
       try {
-        const user = await context.pgResource.getUserAndPasswordForVerification(
-          args.user.email
-        )
-
-        /**
-         *  @TODO: Authentication - Server
-         *
-         *  To verify the user has provided the correct password, we'll use the provided password
-         *  they submitted from the login form to decrypt the 'hashed' version stored in out database.
-         */
-        // Use bcrypt to compare the provided password to 'hashed' password stored in your database.
-        const valid = false
+        const user = await pgResource.getUserAndPasswordForVerification(email)
+        const valid = await bcrypt.compare(password, user.password)
         // -------------------------------
         if (!valid || !user) throw 'User was not found.'
 

@@ -7,7 +7,7 @@ import React from 'react'
 // -------------------------------
 
 import {
-  // ALL_TAGS_QUERY,
+  ALL_TAGS_QUERY,
   ALL_ITEMS_QUERY,
   // ALL_USER_ITEMS_QUERY,
   // ADD_ITEM_MUTATION
@@ -37,14 +37,12 @@ const userItemsData = ({ userId, render }) => {
 }
 
 const tagData = ({ render }) => {
-  // return (
-  //   <Query query={ALL_TAGS_QUERY} variables={{ filter: null }}>
-  //     {({ data: { tags }, loading }) => render ({loading})}
-  //   </Query>
-  // );
-  /**
-   * @TODO: Use Apollo's <Query /> component to fetch all the tags.
-   */
+  return (
+    <Query query={ALL_TAGS_QUERY}> 
+      {({ data: { tags }, loading, error }) => render ({tags, loading, error})}
+    </Query>
+  );
+ 
   return undefined
 }
 
@@ -63,7 +61,7 @@ const addItem = ({ render }) => {
   return undefined
 }
 const ItemsContainer = adopt({
-  // tagData,
+  tagData,
   itemsData,
   // userItemsData,
   // addItem

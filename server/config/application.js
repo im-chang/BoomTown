@@ -10,6 +10,8 @@ module.exports = function(app) {
   app.set('PG_USER', process.env.PG_USER || 'boomtown')
   app.set('PG_PASSWORD', process.env.PG_PASSWORD || 'boomtown')
   app.set('PG_DB', process.env.PG_DB || 'boomtown')
+  app.set('JWT_COOKIE_NAME', 'cookie')
+  app.set('JWT_SECRET', 'secret')
   // app.set('PG_PORT', process.env.PG_PORT || 5432)
 
   /**
@@ -35,11 +37,14 @@ module.exports = function(app) {
    *  PG_USER
    *  PG_PASSWORD
    *  PG_DB
-   *  JWT_SECRET
-   *
+   */
+  // JWT_SECRET
+   
+   /*
    *  And the following non-security related information should also be set for use elsewhere:
-   *
-   *  JWT_COOKIE_NAME
+   */
+  // JWT_SECRET
+     /*
    *  CORS_CONFIG (already set for you below)
    *
    *  Use the app.set and process.env to retrieve environment variables, and provide a fallback
