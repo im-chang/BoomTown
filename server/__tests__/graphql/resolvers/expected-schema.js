@@ -53,7 +53,7 @@ module.exports = `
     id: String! 
   }
  
-  input SignupInput {
+  input SignUpInput {
     fullname: String!
     email: String!
     password: String!
@@ -81,7 +81,7 @@ module.exports = `
   type Mutation {
     login(user: LoginInput!): User!
     logout: Boolean!
-    signup(user: SignupInput!): User!
+    signup(user: SignUpInput!): User!
     addItem (item: NewItemInput!, image: Upload!): Item 
   }
 `

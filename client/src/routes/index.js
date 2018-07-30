@@ -3,18 +3,39 @@ import { Redirect, Route, Switch } from 'react-router'
 import Items from '../pages/Items/Items'
 import Profile from '../pages/Profile/Profile'
 import Share from '../pages/Share/Share'
-import Welcome from '../pages/Home/Home'
+import Home from '../pages/Home/Home'
+import { ViewerContext } from '../context/ViewerProvider'
 
 export default () => (
-  <Fragment>
-      <Switch>
-          <Route exact path="/welcome" exact component={Welcome}/>
-          <Route path="/items" component={Items} />
-          <Route path="/profile" component={Profile} />
-          <Route path="/profile/:userid" component={Profile} />
-          <Route path="/share" component={Share} />
-        <Redirect from="/old" to="/new"/>
-        
-      </Switch>
-  </Fragment>
+  <ViewerContext.Consumer>
+    {({ loading, viewer, error }) => {
+      if (loading) return 'hello' 
+      if (!viewer) {
+        return (
+          <Switch>
+            <Route exact path="/welcome" 
+                  name="home" 
+                  component={Home}
+                  />
+            <Redirect from="*" to="/welcome" />
+          </Switch>
+        )
+      }
+      return (
+        <React.Fragment>
+          <Switch>
+            <Route exact path="/items" component={Items} />
+
+            <Route exact path="/share" component={Share} />
+
+            <Route exact path="/profile" component={Profile} />
+
+            <Route exact path="/profile/:userid" component={Profile} />
+
+            <Redirect to="/items" component={Items} />
+          </Switch>
+        </React.Fragment>
+      )
+    }}
+  </ViewerContext.Consumer>
 )

@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import { withStyles } from '@material-ui/core/styles';
 import { FormSpy, Form, Field } from 'react-final-form'
 import { Button, TextField, Checkbox, InputLabel, Typography } from '@material-ui/core'
 import ItemsContainer from '../../containers/ItemsContainer'
@@ -8,6 +9,7 @@ import {
   updateNewItem,
   resetNewItem
 } from '../../redux/Modules/ShareItemPreview'
+
 
 class ShareItemForm extends Component {
   constructor(props) {
@@ -152,12 +154,12 @@ class ShareItemForm extends Component {
                 </Fragment>
               )}
             />
-            <Field name="Title">
+            <Field name="title">
               {({ input, meta }) => (
                 <TextField placeholder="Name your Item" {...input} />
               )}
             </Field>
-            <Field name="Description">
+            <Field name="description">
               {({ input, meta }) => (
                 <TextField
                   placeholder="Describe your Item"
@@ -188,12 +190,12 @@ class ShareItemForm extends Component {
 
             <Field
               render={({ input, meta }) => (
-                <Button type="submit" variant="contained" color="primary">
+                <Button type="submit" variant="contained" color="secondary">
                   Share
                 </Button>
               )}
             />
-            <pre>{JSON.stringify(values, 0, 2)}</pre>
+            {/* <pre>{JSON.stringify(values, 0, 2)}</pre> */}
           </form>
         )}
       />
@@ -217,7 +219,8 @@ const mapDispatchToProps = dispatch => ({
   }
 })
 
-export default connect(
+export default 
+connect(
   undefined,
   mapDispatchToProps
 )(ShareItemForm)

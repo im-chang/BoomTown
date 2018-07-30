@@ -1,69 +1,71 @@
 import { adopt } from 'react-adopt'
 import { Query, Mutation } from 'react-apollo'
 import React from 'react'
-
-// @TODO: Uncommment this line when the ViewerProvider is added to the app.
-// import { ViewerContext } from '../context/ViewerProvider'
-// -------------------------------
+import { ViewerContext } from '../context/ViewerProvider'
 
 import {
   ALL_TAGS_QUERY,
   ALL_ITEMS_QUERY,
-  // ALL_USER_ITEMS_QUERY,
-  ADD_ITEM_MUTATION
+  ALL_USER_ITEMS_QUERY,
+  ADD_ITEM_MUTATION,
 } from '../apollo/queries'
 
-const itemsData = ({ render }) => {
-  return (
-    <Query query={ALL_ITEMS_QUERY} variables={{ id: 1 }}>
-     {({ data: { items }, loading, error }) => render ({ items, loading, error })}
-    </Query>
-  );
-}
+const itemsData = ({ render }) => (
+  <ViewerContext.Consumer>
+    {({ viewer }) => (
+      <Query query={ALL_ITEMS_QUERY} 
+            variables={{ id: viewer.id }}>
+       {({ data: { items }, loading }) => render({ items, loading })}
+       </Query>
+    )}
+    </ViewerContext.Consumer>
+  )
 
-const userItemsData = ({ userId, render }) => {
-  // return (
-  //   <Query query={ALL_USERS_ITEMS_QUERY} variables={{ filter: null }}>
-  //     {({ data: { items }, loading}) => render ({loading})}
-  //   </Query>
-  // );
-  /**
-   * @TODO: Use Apollo's <Query /> component to fetch all of a user's items.
-   *
-   * Note: Your query will need to retrieve only items that belong to a
-   * specific user id.
-   */
-  return undefined
-}
+  const userItemsData = ({ id, render }) => (
+    <ViewerContext.Consumer>
+      {({ viewer }) => (
+        <Query
+          query={ALL_USER_ITEMS_QUERY}
+          variables={{ id: id || viewer.id }}
+        >
+          {({ loading, error, data: { user } = {} }) =>
+            render({ loading, error, user })
+          }
+        </Query>
+      )}
+    </ViewerContext.Consumer>
+  )
 
-const tagData = ({ render }) => {
-  return (
+const tagData = ({ render }) => (
     <Query query={ALL_TAGS_QUERY}> 
       {({ data: { tags }, loading, error }) => render ({tags, loading, error})}
     </Query>
   );
  
-  return undefined
-}
 
-const addItem = ({ render }) => {
-  return (
-
+const addItem = ({ render }) => (
+  <ViewerContext.Consumer>
+    {({ viewer }) => (
   <Mutation
     mutation={ADD_ITEM_MUTATION}
+    refetchQueries={() => [
+      { query: ALL_USER_ITEMS_QUERY,
+        variables: { id: viewer.id } 
+      }
+    ]}
   >
     {(mutation, { data, error, loading }) =>
       render({ mutation, data, error, loading })  
   }
   </Mutation>
-  );
+  )}
+  </ViewerContext.Consumer>
+  )
 
- 
-}
 const ItemsContainer = adopt({
   tagData,
   itemsData,
-  // userItemsData,
+  userItemsData,
   addItem
 })
 

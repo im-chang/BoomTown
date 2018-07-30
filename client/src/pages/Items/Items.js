@@ -3,11 +3,14 @@ import React from 'react'
 import ItemsContainer from '../../containers/ItemsContainer'
 import styles from './styles'
 import ItemCard from '../../components/ItemCard';
+import ButtonAppBar from '../../components/ButtonAppBar'
 
 
 const Items = ({ classes }) => {
   return (
 <div>
+  <ButtonAppBar/>
+  <div className={classes.Items}>
   <ItemsContainer>
     {({ itemsData: { items, loading, error } }) => {
       if (loading) {
@@ -23,6 +26,7 @@ const Items = ({ classes }) => {
     )
     }}
   </ItemsContainer>
+  </div>
 </div>
   )
 }

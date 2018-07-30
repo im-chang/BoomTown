@@ -9,7 +9,8 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { CardHeader } from '@material-ui/core';
 import Image from 'material-ui-image'
-// import Avatar from '@material-ui/core/Avatar';
+import Avatar from '@material-ui/core/Avatar';
+import moment from 'moment';
 const styles = {
   card: {
     maxWidth: 345,
@@ -26,6 +27,15 @@ class ItemCard extends Component {
   const { classes, item } = this.props
   return (
     <div>
+      <CardHeader
+            avatar={
+              <Avatar aria-label="Recipe" className={classes.avatar}>
+                R
+              </Avatar>
+            }
+            title = {item.itemowner.fullname}
+            subheader = {moment(item.created).fromNow()}
+          />
       <Card className={classes.card}>
         <CardMedia
           className={classes.media}
@@ -38,12 +48,15 @@ class ItemCard extends Component {
             gutterBottom variant="headline" component="h2">
             {item.title}
           </Typography>
-          <Typography gutterBottom variant="headline" component="h2">
+          <Typography variant="caption" gutterBottom align="start">
+          {/* {item.tag.map(tag => tag.title).join(', ')} */}
+          </Typography>
+          <Typography gutterBottom variant="sub-heading">
             {item.description}
           </Typography>
         </CardContent>
         <CardActions>
-          <Button  color="secondary">
+          <Button variant="outlined" color="secondary">
             Borrow
           </Button>
         </CardActions>

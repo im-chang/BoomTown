@@ -28,23 +28,7 @@ function setCookie({ tokenName, token, res }) {
 
 function generateToken(user, secret) {
   const { id, email, fullname, bio } = user // Omit the password from the token
-   
-  /**
-   *  @TODO: Authentication - Server
-   *
-   *  This helper function is responsible for generating the JWT token.
-   *  Here, we'll be taking a JSON object representing the user (the 'J' in JWT)
-   *  and cryptographically 'signing' it using our app's 'secret'.
-   *  The result is a cryptographic hash representing out JSON user
-   *  which can be decoded using the app secret to retrieve the stateless session.
-   */
-  // Refactor this return statement to return the cryptographic hash (the Token)
-  return  jwt.sign(
-    {
-    user: user
-
-  }, secret, { expiresIn: '1h' });
-  // -------------------------------
+  return  jwt.sign({ id, email, fullname, bio }, secret, { expiresIn: '1h' });
 }
 
 module.exports = function(app) {
@@ -61,22 +45,23 @@ module.exports = function(app) {
 
         setCookie({
           tokenName: app.get('JWT_COOKIE_NAME'),
-          token: generateToken(args.user, app.get('JWT_SECRET')),
+          token: generateToken(user, app.get('JWT_SECRET')),
           res: context.req.res
         })
 
-        return true
+        return {
+          id: user.id
+        }
 
       } catch (e) {
         throw new AuthenticationError(e)
       }
     },
 
-    async login(parent, { user: { email, password } }, { pgResource, req}) {
+    async login(parent, args, context) {
       try {
-        const user = await pgResource.getUserAndPasswordForVerification(email)
-        const valid = await bcrypt.compare(password, user.password)
-        // -------------------------------
+        const user = await context.pgResource.getUserAndPasswordForVerification(args.user.email)
+        const valid = await bcrypt.compare(args.user.password, user.password)
         if (!valid || !user) throw 'User was not found.'
 
         setCookie({

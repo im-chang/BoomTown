@@ -1,11 +1,6 @@
 var strs = require('stringstream')
 
 function tagsQueryString(tags, itemid, result) {
-  /**
-   * Challenge:
-   * This function is recursive, and a little complicated.
-   * Can you refactor it to be simpler / more readable?
-   */
   const length = tags.length
   return length === 0
     ? `${result};`
@@ -21,7 +16,7 @@ module.exports = function(postgres) {
   return {
     async createUser({ fullname, email, password }) {
       const newUserInsert = {
-        text: `INSERT INTO users (fullname, email, password) VALUES ($1, $2, $3);`, 
+        text: 'INSERT INTO users (fullname, email, password) VALUES ($1, $2, $3) RETURNING *', 
         values: [fullname, email, password]
       }
       try {
@@ -40,7 +35,7 @@ module.exports = function(postgres) {
     },
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
-        text: '', // @TODO: Authentication - Server
+        text: 'SELECT * FROM users WHERE email = $1', 
         values: [email]
       }
       try {
@@ -164,7 +159,7 @@ module.exports = function(postgres) {
               // Convert image (file stream) to Base64
               const imageStream = image.stream.pipe(strs('base64'))
 
-              let base64Str = ''
+              let base64Str = 'data:image/*;base64,'
               imageStream.on('data', data => {
                 base64Str += data
               })
@@ -176,9 +171,14 @@ module.exports = function(postgres) {
                 // Generate new Item query
                 // @TODO
                 // -------------------------------
+                const newItemQuery = {
+                  test: "",
+                  values: []
+                }
 
                 // Insert new Item
                 // @TODO
+                const newItem = client.query(newItemQuery)
                 // -------------------------------
 
                 const imageUploadQuery = {
@@ -194,23 +194,19 @@ module.exports = function(postgres) {
                 }
 
                 // Upload image
-                const uploadedImage = await client.query(imageUploadQuery)
-                const imageid = uploadedImage.rows[0].id
-
-                // Generate image relation query
-                // @TODO
-                // -------------------------------
-
-                // Insert image
-                // @TODO
-                // -------------------------------
+                await client.query(imageUploadQuery)
 
                 // Generate tag relationships query (use the'tagsQueryString' helper function provided)
                 // @TODO
+                const tagsQuery = {
+                  text: 'INSERT INTO itemtags (itemid, tagid) VALUES $(tagsQueryString(/* ??? */))',
+                  values: []
+                }
                 // -------------------------------
 
                 // Insert tags
                 // @TODO
+                await client.query(tagsQuery)
                 // -------------------------------
 
                 // Commit the entire transaction!
