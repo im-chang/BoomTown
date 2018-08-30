@@ -191,7 +191,7 @@ module.exports = function(postgres) {
 
                 const newItemInsert = {
                   text: `
-                    INSERT INTO items (title,description, ownerid) VALUES ($1, $2, $3)
+                    INSERT INTO items (title, description, ownerid) VALUES ($1, $2, $3)
                     RETURNING *`,
                   values: [title, description, user.id]
                 }

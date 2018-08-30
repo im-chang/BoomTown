@@ -40,7 +40,7 @@ class AccountForm extends Component {
     if (!values.password) {
       errors.password = 'Required'
     }
-    return errors, console.log(errors)
+    return errors
   }
 
   render() {

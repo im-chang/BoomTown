@@ -8,7 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { CardHeader } from '@material-ui/core'
-import Image from 'material-ui-image'
+// import Image from 'material-ui-image'
 import Avatar from '@material-ui/core/Avatar'
 import moment from 'moment'
 const styles = {
