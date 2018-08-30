@@ -7,7 +7,7 @@ import { Grid } from '@material-ui/core'
 
 const Items = ({ classes }) => {
   return (
-    <div>
+    <div className={classes.body}>
       <div className={classes.Items}>
         <Grid
           container

@@ -116,10 +116,7 @@ class AccountForm extends Component {
                       variant="contained"
                       size="large"
                       color="secondary"
-                      disabled={
-                        pristine || invalid
-                        // @TODO: This prop should depend on pristine or valid state of form
-                      }
+                      disabled={pristine || invalid}
                     >
                       {this.state.formToggle ? 'Enter' : 'Create Account'}
                     </Button>
@@ -128,7 +125,6 @@ class AccountForm extends Component {
                         className={classes.formToggle}
                         type="button"
                         onClick={() => {
-                          // @TODO: Reset the form on submit
                           this.setState({
                             formToggle: !this.state.formToggle
                           })
@@ -141,9 +137,7 @@ class AccountForm extends Component {
                     </Typography>
                   </Grid>
                 </FormControl>
-                <Typography className={classes.errorMessage}>
-                  {/* @TODO: Display sign-up and login errors */}
-                </Typography>
+                <Typography className={classes.errorMessage} />
               </form>
             )}
           />

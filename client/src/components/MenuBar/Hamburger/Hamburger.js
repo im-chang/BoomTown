@@ -51,9 +51,7 @@ class LongMenu extends React.Component {
           <ViewerContext.Consumer>
             {({ viewer }) => (
               <Link to={`/profile/${viewer.id}`}>
-                <MenuItem key="Your Profile" onClick={this.handleClose}>
-                  Your Profile
-                </MenuItem>
+                <MenuItem onClick={this.handleClose}>Your Profile</MenuItem>
               </Link>
             )}
           </ViewerContext.Consumer>
@@ -61,7 +59,6 @@ class LongMenu extends React.Component {
             {({ logout }) => {
               return (
                 <MenuItem
-                  key="Sign Out"
                   onClick={() => {
                     logout.mutation()
                   }}

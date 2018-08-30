@@ -67,11 +67,15 @@ module.exports = function(postgres) {
       }
     },
     async getItems(idToOmit) {
-      let text = `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid 
-      FROM items item`
+      let text = `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid, up.data as imageurl 
+      FROM items item
+      INNER JOIN uploads up
+      ON up.itemid = item.id`
       if (idToOmit) {
-        text = `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid
+        text = `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid, up.data as imageurl 
         FROM items item
+        INNER JOIN uploads up
+        ON up.itemid = item.id
         WHERE item.ownerid != $1 AND item.borrowerid is NULL`
       }
 
@@ -90,8 +94,10 @@ module.exports = function(postgres) {
     async getItemsForUser(id) {
       try {
         const items = await postgres.query({
-          text: `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid
+          text: `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid, up.data as imageurl 
           FROM items item
+          INNER JOIN uploads up
+          ON up.itemid = item.id
           WHERE ownerid = $1`,
           values: [id]
         })
@@ -108,8 +114,10 @@ module.exports = function(postgres) {
            *  @TODO: Advanced queries
            *  Get all Items. Hint: You'll need to use a LEFT INNER JOIN among others
            */
-          text: `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid
+          text: `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid, up.data as imageurl 
           FROM items item
+          INNER JOIN uploads up
+          ON up.itemid = item.id 
           WHERE borrowerid = $1`,
           values: [id]
         })
@@ -191,7 +199,7 @@ module.exports = function(postgres) {
 
                 const newItemInsert = {
                   text: `
-                    INSERT INTO items (title, description, ownerid) VALUES ($1, $2, $3)
+                    INSERT INTO items (title,description, ownerid) VALUES ($1, $2, $3)
                     RETURNING *`,
                   values: [title, description, user.id]
                 }

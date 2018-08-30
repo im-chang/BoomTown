@@ -150,7 +150,6 @@ class ShareItemForm extends Component {
           image: file
         }
       })
-      // this.setState({ done: true })
     } catch (e) {
       console.log(e)
     }
