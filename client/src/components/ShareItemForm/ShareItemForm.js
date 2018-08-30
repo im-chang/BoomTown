@@ -198,7 +198,7 @@ class ShareItemForm extends Component {
                       return ''
                     }}
                   />
-                  <Typography variant="display1">
+                  <Typography variant="display1" style={{ marginTop: '2rem' }}>
                     Share. Borrow. Prosper.
                   </Typography>
                   <Field
@@ -208,6 +208,11 @@ class ShareItemForm extends Component {
                         <Button
                           color="primary"
                           variant="contained"
+                          style={{
+                            width: '100%',
+                            textAlign: 'center',
+                            marginTop: '2rem'
+                          }}
                           onClick={() => {
                             this.fileRef.current.click()
                           }}
@@ -226,25 +231,34 @@ class ShareItemForm extends Component {
                   />
                   <Field name="title">
                     {({ input, meta }) => (
-                      <TextField placeholder="Name your Item" {...input} />
+                      <TextField
+                        style={{
+                          width: '100%',
+                          marginTop: '2rem',
+                          marginBottom: '2rem'
+                        }}
+                        placeholder="Name your Item"
+                        {...input}
+                      />
                     )}
                   </Field>
                   <Field name="description">
                     {({ input, meta }) => (
                       <TextField
+                        style={{ width: '100%', marginBottom: '2rem' }}
                         placeholder="Describe your Item"
                         multiline
                         {...input}
                       />
                     )}
                   </Field>
-                  <div>
+                  <div style={{ marginBottom: '2rem' }}>
                     <label>
                       <b>Tags:</b>
                     </label>
                     <Select
                       multiple
-                      style={{ width: '91%' }}
+                      style={{ width: '100%' }}
                       value={this.state.selectedTags}
                       onChange={event => this.handleCheckbox(event)}
                       input={<Input />}
@@ -271,6 +285,7 @@ class ShareItemForm extends Component {
                       type="submit"
                       variant="contained"
                       color="primary"
+                      style={{ marginBottom: '2rem' }}
                       disabled={
                         !(
                           this.state.haveText &&

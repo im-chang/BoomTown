@@ -5,7 +5,6 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
 import LongMenu from './Hamburger/Hamburger'
 import BoomtownLogo from '../../images/boomtown.svg'
 import Icon from '@material-ui/icons/AddCircle'
@@ -23,12 +22,17 @@ function MenuBar(props) {
   const { classes } = props
   return (
     <div className={classes.root}>
-      <AppBar position="absolute" style={{ boxShadow: 'none' }}>
+      <AppBar position="absolute" style={{ boxShadow: 'none', height: '4rem' }}>
         <Link to="/items">
           <img
             src={BoomtownLogo}
             alt="Boomtown Logo"
-            style={{ position: 'absolute', maxHeight: '50px', margin: '10px' }}
+            style={{
+              position: 'absolute',
+              maxHeight: '50px',
+              margin: '10px',
+              zIndex: '5'
+            }}
           />
         </Link>
         <Toolbar>
@@ -48,7 +52,6 @@ function MenuBar(props) {
             <Icon style={{ margin: '20px' }}>add_circle</Icon> SHARE SOMETHING
           </Button>
           <LongMenu />
-          <IconButton />
         </Toolbar>
       </AppBar>
     </div>

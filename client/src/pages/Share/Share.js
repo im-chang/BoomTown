@@ -9,8 +9,12 @@ const Share = ({ classes }) => {
   return (
     <div>
       <div className={classes.SharePage}>
-        <ShareItemPreview />
-        <ShareItemForm />
+        <div className={classes.SharePreview}>
+          <ShareItemPreview />
+        </div>
+        <div className={classes.ShareForm}>
+          <ShareItemForm />
+        </div>
       </div>
     </div>
   )

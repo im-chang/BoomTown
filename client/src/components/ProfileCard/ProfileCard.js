@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, Typography } from '@material-ui/core'
 import styles from './styles'
 
 const ProfileCard = ({ classes, user }) => (
-  <Card className={classes.root}>
+  <Card className={classes.profileCard}>
     <CardHeader
       avatar={<Gravatar email={user.email} />}
       title={<Typography>{user.fullname}</Typography>}
