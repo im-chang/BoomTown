@@ -1,7 +1,6 @@
-
 const { ApolloError } = require('apollo-server')
-const jwt = require("jsonwebtoken")
-const authMutations = require("./auth")
+const jwt = require('jsonwebtoken')
+const authMutations = require('./auth')
 
 const { UploadScalar, DateScalar } = require('../custom-types')
 
@@ -11,9 +10,9 @@ module.exports = function(app) {
     // Date: DateScalar,
 
     Query: {
-      viewer( parent, args, context, info) {
+      viewer(parent, args, context, info) {
         if (context.token) {
-          return jwt.decode(context.token, app.get('JWT_SECRET'));
+          return jwt.decode(context.token, app.get('JWT_SECRET'))
         }
         return null
       },
@@ -46,13 +45,11 @@ module.exports = function(app) {
     User: {
       async items(parent, args, { pgResource }, info) {
         try {
-          const items= await pgResource.getItemsForUser(parent.id)
+          const items = await pgResource.getItemsForUser(parent.id)
           return items
+        } catch (e) {
+          throw new ApolloError(e)
         }
-        catch (e) {
-        throw new ApolloError(e)
-      }
-
       },
       async borrowed(parent, args, { pgResource }, info) {
         try {
@@ -65,15 +62,13 @@ module.exports = function(app) {
     },
 
     Item: {
-  
-      async itemowner(parent, { id } , { pgResource }, info) {
+      async itemowner(parent, { id }, { pgResource }, info) {
         try {
           const itemOwner = pgResource.getUserById(parent.ownerid)
           return itemOwner
         } catch (e) {
           throw new ApolloError(e)
         }
-
       },
       async tags(parent, args, { pgResource }, info) {
         try {
@@ -81,7 +76,7 @@ module.exports = function(app) {
           return itemTags
         } catch (e) {
           throw new ApolloError(e)
-      }
+        }
       },
       async borrower(parent, id, { pgResource }, info) {
         try {
@@ -103,12 +98,11 @@ module.exports = function(app) {
       ...authMutations(app),
 
       async addItem(parent, args, context, info) {
-
         image = await image
         const user = await jwt.decode(context.token, app.get('JWT_SECRET'))
         const newItem = await context.pgResource.saveNewItem({
           item: args.item,
-          image: args.image,
+          image: image,
           user
         })
         return newItem

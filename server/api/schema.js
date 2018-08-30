@@ -8,7 +8,7 @@ module.exports = gql`
     VIEWER
   }
 
- directive @auth on OBJECT | FIELD_DEFINITION
+  directive @auth on OBJECT | FIELD_DEFINITION
 
   type Item @auth {
     id: ID!
@@ -46,7 +46,6 @@ module.exports = gql`
   input AssignedTag {
     id: ID!
     title: String!
-
   }
 
   input AssignedBorrower {
@@ -60,7 +59,7 @@ module.exports = gql`
   }
 
   type Query {
-    uploads:[File]
+    uploads: [File]
     user(id: ID!): User
     viewer: User
     items(filter: ID): [Item]
@@ -73,27 +72,18 @@ module.exports = gql`
     password: String!
   }
 
-  input LoginInput{
+  input LoginInput {
     email: String!
-    password:String!
+    password: String!
   }
 
-
   type Mutation {
-    addItem(
-      item: NewItemInput!, 
-      image: Upload
-    ): Item
+    addItem(item: NewItemInput!, image: Upload): Item
 
-    signup(
-      user: SignUpInput!,
-    ): User
+    signup(user: SignUpInput!): User
 
-    login(
-      user: LoginInput,
-      ): User
+    login(user: LoginInput): User
 
     logout: Boolean
   }
-
 `

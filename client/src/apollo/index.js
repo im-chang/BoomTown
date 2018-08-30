@@ -30,7 +30,7 @@ const client = new ApolloClient({
      *
      * Don't forget to add to add a comma after the first array item above!
      */
-    httpWithUploadsLink,
+    httpWithUploadsLink
   ]),
   cache: new InMemoryCache() // Pull data from client-side cache, if available
 })

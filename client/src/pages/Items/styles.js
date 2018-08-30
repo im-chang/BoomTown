@@ -1,22 +1,12 @@
 const styles = theme => ({
-
-Items: {
+  Items: {
     backgroundColor: '#212121',
-    display: 'grid',
-    [theme.breakpoints.up('lg')]: {
-        gridTemplateColumns: '1fr 1fr 1fr',
-    },
-    [theme.breakpoints.up('sm')]: {
-        gridTemplateColumns: '1fr 1fr',
-    },
+
     [theme.breakpoints.up('xs')]: {
-        padding: 16,
+      padding: 16
     },
-    
-}
-
-
+    height: '100%'
+  }
 })
-
 
 export default styles

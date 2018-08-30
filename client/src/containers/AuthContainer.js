@@ -12,28 +12,32 @@ import {
 
 const signup = ({ render }) => (
   <Mutation
-  mutation= {SIGNUP_MUTATION}
-  refetchQueries= {result => [{ query: VIEWER_QUERY}]} >
+    mutation={SIGNUP_MUTATION}
+    refetchQueries={result => [{ query: VIEWER_QUERY }]}
+  >
     {(mutation, { data, error, loading }) =>
-    render({ mutation, data, error, loading })}
+      render({ mutation, data, error, loading })
+    }
   </Mutation>
 )
 
 const login = ({ render }) => (
   <Mutation
-  mutation= {LOGIN_MUTATION}
-  refetchQueries= {result => [{ query: VIEWER_QUERY}]} >
+    mutation={LOGIN_MUTATION}
+    refetchQueries={result => [{ query: VIEWER_QUERY }]}
+  >
     {(mutation, { data, error, loading }) =>
-    render({ mutation, data, error, loading })}
+      render({ mutation, data, error, loading })
+    }
   </Mutation>
 )
 
 const logout = ({ render }) => (
-  <Mutation 
-  mutation={LOGOUT_MUTATION} onCompleted={() => client.resetStore()}>
-  {(mutation, { data, error, loading }) =>
-    render({ mutation, data, error, loading })}
-</Mutation>
+  <Mutation mutation={LOGOUT_MUTATION} onCompleted={() => client.resetStore()}>
+    {(mutation, { data, error, loading }) =>
+      render({ mutation, data, error, loading })
+    }
+  </Mutation>
 )
 
 const AuthContainer = adopt({

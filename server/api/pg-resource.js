@@ -1,6 +1,11 @@
 var strs = require('stringstream')
 
 function tagsQueryString(tags, itemid, result) {
+  /**
+   * Challenge:
+   * This function is recursive, and a little complicated.
+   * Can you refactor it to be simpler / more readable?
+   */
   const length = tags.length
   return length === 0
     ? `${result};`
@@ -16,7 +21,8 @@ module.exports = function(postgres) {
   return {
     async createUser({ fullname, email, password }) {
       const newUserInsert = {
-        text: 'INSERT INTO users (fullname, email, password) VALUES ($1, $2, $3) RETURNING *', 
+        text:
+          'INSERT INTO users (fullname, email, password) VALUES ($1, $2, $3) RETURNING *',
         values: [fullname, email, password]
       }
       try {
@@ -35,7 +41,7 @@ module.exports = function(postgres) {
     },
     async getUserAndPasswordForVerification(email) {
       const findUserQuery = {
-        text: 'SELECT * FROM users WHERE email = $1', 
+        text: 'SELECT * FROM users WHERE email = $1',
         values: [email]
       }
       try {
@@ -47,11 +53,31 @@ module.exports = function(postgres) {
       }
     },
     async getUserById(id) {
+      /**
+       *  @TODO: Handling Server Errors
+       *
+       *  Inside of our resuorce methods we get to determine wen and how errors are returned
+       *  to our resolvers using try / catch / throw semantics.
+       *
+       *  Ideally, the errors that we'll throw from our resource should be able to be used by the client
+       *  to display user feedback. This means we'll be catching errors and throwing new ones.
+       *
+       *  Errors thrown from our resource will be captured and returned from our resolvers.
+       *
+       *  This will be the basic logic for this resource method:
+       *  1) Query for the user using the given id. If no user is found throw an error.
+       *  2) If there is an error with the query (500) throw an error.
+       *  3) If the user is found and there are no errors, return only the id, email, fullname, bio fields.
+       *     -- this is important,don't return the password!
+       *
+       *  You'll need to complete the query first before attempting this exercise.
+       */
 
       const findUserQuery = {
-        text: 'SELECT * FROM users WHERE id = $1', 
+        text: 'SELECT * FROM users WHERE id = $1',
         values: [id]
       }
+
       try {
         const user = await postgres.query(findUserQuery)
         if (!user) throw 'User was not found.'
@@ -59,24 +85,33 @@ module.exports = function(postgres) {
       } catch (e) {
         throw 'User was not found.'
       }
+      // -------------------------------
     },
-
     async getItems(idToOmit) {
+      let text = `SELECT * FROM items`
       try {
         const items = await postgres.query({
-          text: `SELECT * FROM items WHERE (ownerid != $1 AND borrowerid IS NULL) OR ($1 IS NULL)`,
-          values: [idToOmit]
+          text: text,
+          values: idToOmit ? [idToOmit] : []
         })
-        if (!items) throw 'Items not found'
         return items.rows
       } catch (e) {
-        throw 'Items not found.'
+        console.log(e)
+        throw 'Items were not found.'
       }
     },
     async getItemsForUser(id) {
       try {
         const items = await postgres.query({
-          text: `SELECT * FROM items WHERE ownerid = $1`,
+          /**
+           *  @TODO: Advanced queries
+           *  Get all Items. Hint: You'll need to use a LEFT INNER JOIN among others
+           */
+          text: `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid, up.data as imageurl 
+          FROM items item
+          INNER JOIN uploads up
+          ON up.itemid = item.id
+          WHERE ownerid = $1`,
           values: [id]
         })
         if (!items) throw 'Items not found'
@@ -88,35 +123,42 @@ module.exports = function(postgres) {
     async getBorrowedItemsForUser(id) {
       try {
         const items = await postgres.query({
-          text: `SELECT * FROM items WHERE borrowerid = $1`,
+          /**
+           *  @TODO: Advanced queries
+           *  Get all Items. Hint: You'll need to use a LEFT INNER JOIN among others
+           */
+          text: `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid, up.data as imageurl 
+          FROM items item
+          INNER JOIN uploads up
+          ON up.itemid = item.id 
+          WHERE borrowerid = $1`,
           values: [id]
         })
         if (!items) throw 'Items not found.'
-          return items.rows
-        } catch (e) {
-          throw 'Items not found.'
-        }
-      },
-      async getTags() {
-        try {
-          const tags = await postgres.query({
-            text: `SELECT * FROM tags`
-          })
-          if (!tags) throw 'Tags not found.'
-          return tags.rows
-        } catch (e) {
-          throw 'Tags not found.'
-        }
-      },
+        return items.rows
+      } catch (e) {
+        throw 'Items not found.'
+      }
+    },
+    async getTags() {
+      try {
+        const tags = await postgres.query({
+          text: `SELECT * FROM tags`
+        })
+        if (!tags) throw 'Tags not found.'
+        return tags.rows
+      } catch (e) {
+        throw 'Tags not found.'
+      }
+    },
     async getTagsForItem(id) {
       const tagsQuery = {
-        text: `SELECT tag.id as id, tag.title as title
-        FROM items item 
-        JOIN itemtags itemtag 
-        ON item.id = itemtag.itemid
-        JOIN tags tag
-        ON tag.id = itemtag.tagid
-        WHERE item.id  = $1;`, // @TODO: Advanced queries
+        text: `
+        SELECT tag.id as id, tag.title as title
+        FROM items item
+        JOIN itemtags itemtag ON item.id=itemtag.itemid
+        JOIN tags tag ON itemtag.tagid=tag.id
+        WHERE item.id= $1;`,
         values: [id]
       }
       try {
@@ -168,46 +210,53 @@ module.exports = function(postgres) {
                 // Image has been converted, begin saving things
                 const { title, description, tags } = item
 
-                // Generate new Item query
-                // @TODO
-                // -------------------------------
-                const newItemQuery = {
-                  test: "",
-                  values: []
+                const newItemInsert = {
+                  text: `
+                    INSERT INTO items (title,description, ownerid) VALUES ($1, $2, $3)
+                    RETURNING *`,
+                  values: [title, description, user.id]
                 }
 
-                // Insert new Item
-                // @TODO
-                const newItem = client.query(newItemQuery)
+                const newItem = await client.query(newItemInsert)
+                const itemid = newItem.rows[0].id
+
                 // -------------------------------
 
                 const imageUploadQuery = {
                   text:
                     'INSERT INTO uploads (itemid, filename, mimetype, encoding, data) VALUES ($1, $2, $3, $4, $5) RETURNING *',
                   values: [
-                    // itemid,
+                    itemid,
                     image.filename,
                     image.mimetype,
                     'base64',
                     base64Str
                   ]
                 }
-
-                // Upload image
-                await client.query(imageUploadQuery)
+                try {
+                  // Upload image
+                  await client.query(imageUploadQuery)
+                } catch (e) {
+                  console.log(e)
+                }
 
                 // Generate tag relationships query (use the'tagsQueryString' helper function provided)
                 // @TODO
+                // -------------------------------
                 const tagsQuery = {
-                  text: 'INSERT INTO itemtags (itemid, tagid) VALUES $(tagsQueryString(/* ??? */))',
-                  values: []
+                  text: `
+                    INSERT INTO itemtags(tagid, itemid) VALUES ${tagsQueryString(
+                      [...tags],
+                      itemid,
+                      ''
+                    )}`,
+                  values: tags.map(tag => tag.id)
                 }
-                // -------------------------------
-
-                // Insert tags
-                // @TODO
-                await client.query(tagsQuery)
-                // -------------------------------
+                try {
+                  await client.query(tagsQuery)
+                } catch (e) {
+                  console.log(e)
+                }
 
                 // Commit the entire transaction!
                 client.query('COMMIT', err => {
@@ -216,8 +265,7 @@ module.exports = function(postgres) {
                   }
                   // release the client back to the pool
                   done()
-                  // Uncomment this resolve statement when you're ready!
-                  // resolve(newItem.rows[0])
+                  resolve(newItem.rows[0])
                   // -------------------------------
                 })
               })

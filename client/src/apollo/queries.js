@@ -2,29 +2,28 @@ import gql from 'graphql-tag'
 
 const ItemFields = gql`
   fragment ItemFields on Item {
-    
-     id
-     title
-     imageurl
-     description
-     created
-     tags {
-       id
-       title
-     }
-     itemowner {
-       id
-       fullname
-       email
-       bio
-     }
-     borrower {
-       id
-       fullname
-       email
-       bio
-     }
-    
+    id
+    title
+    imageurl
+    description
+    created
+    tags {
+      id
+      title
+    }
+    itemowner {
+      id
+      fullname
+      email
+      bio
+    }
+    borrower {
+      id
+      fullname
+      email
+      bio
+    }
+
     # See the Apollo docs for instructions on how to use fragments:
     # https://www.apollographql.com/docs/angular/features/fragments.html
   }
@@ -39,8 +38,8 @@ export const ITEM_QUERY = gql`
 `
 
 export const ALL_ITEMS_QUERY = gql`
-  query ($id: ID!) {
-    items( filter:$id ){
+  query getItems($filter: ID) {
+    items(filter: $filter) {
       ...ItemFields
     }
   }
@@ -48,38 +47,39 @@ export const ALL_ITEMS_QUERY = gql`
 `
 
 export const ALL_USER_ITEMS_QUERY = gql`
-  query user($id: ID!) {
-    fullname
-    email
-    bio
-    items {
-      ...ItemFields
-    }
-    borrowed {
-      ...ItemFields
+  query($id: ID!) {
+    user(id: $id) {
+      id
+      fullname
+      email
+      bio
+      items {
+        ...ItemFields
+      }
+      borrowed {
+        ...ItemFields
+      }
     }
   }
   ${ItemFields}
 `
-
 export const ALL_TAGS_QUERY = gql`
-    query {
+  query {
     tags {
       title
       id
     }
   }
-  `
-
+`
 
 export const ADD_ITEM_MUTATION = gql`
   mutation addItem($item: NewItemInput!, $image: Upload!) {
-    items {
-    ...ItemFields
+    addItem(item: $item, image: $image) {
+      id
     }
   }
-  ${ItemFields}
 `
+
 export const VIEWER_QUERY = gql`
   query {
     viewer {
@@ -106,8 +106,6 @@ export const SIGNUP_MUTATION = gql`
 
 export const LOGIN_MUTATION = gql`
   mutation login($user: LoginInput!) {
-    login(user: $user) {
-      id
-    }
+    login(user: $user)
   }
 `
