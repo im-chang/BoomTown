@@ -6,7 +6,8 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
-
+import LongMenu from './Hamburger/Hamburger'
+import BoomtownLogo from '../../images/boomtown.svg'
 import Icon from '@material-ui/icons/AddCircle'
 import { Link } from 'react-router-dom'
 const styles = {
@@ -23,6 +24,13 @@ function MenuBar(props) {
   return (
     <div className={classes.root}>
       <AppBar position="absolute" style={{ boxShadow: 'none' }}>
+        <Link to="/items">
+          <img
+            src={BoomtownLogo}
+            alt="Boomtown Logo"
+            style={{ position: 'absolute', maxHeight: '50px', margin: '10px' }}
+          />
+        </Link>
         <Toolbar>
           <Typography
             variant="title"
@@ -39,6 +47,7 @@ function MenuBar(props) {
           >
             <Icon style={{ margin: '20px' }}>add_circle</Icon> SHARE SOMETHING
           </Button>
+          <LongMenu />
           <IconButton />
         </Toolbar>
       </AppBar>

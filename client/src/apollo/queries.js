@@ -29,7 +29,7 @@ const ItemFields = gql`
   }
 `
 export const ITEM_QUERY = gql`
-  query item {
+  query {
     items {
       ...ItemFields
     }

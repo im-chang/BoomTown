@@ -53,26 +53,6 @@ module.exports = function(postgres) {
       }
     },
     async getUserById(id) {
-      /**
-       *  @TODO: Handling Server Errors
-       *
-       *  Inside of our resuorce methods we get to determine wen and how errors are returned
-       *  to our resolvers using try / catch / throw semantics.
-       *
-       *  Ideally, the errors that we'll throw from our resource should be able to be used by the client
-       *  to display user feedback. This means we'll be catching errors and throwing new ones.
-       *
-       *  Errors thrown from our resource will be captured and returned from our resolvers.
-       *
-       *  This will be the basic logic for this resource method:
-       *  1) Query for the user using the given id. If no user is found throw an error.
-       *  2) If there is an error with the query (500) throw an error.
-       *  3) If the user is found and there are no errors, return only the id, email, fullname, bio fields.
-       *     -- this is important,don't return the password!
-       *
-       *  You'll need to complete the query first before attempting this exercise.
-       */
-
       const findUserQuery = {
         text: 'SELECT * FROM users WHERE id = $1',
         values: [id]
@@ -85,15 +65,22 @@ module.exports = function(postgres) {
       } catch (e) {
         throw 'User was not found.'
       }
-      // -------------------------------
     },
     async getItems(idToOmit) {
-      let text = `SELECT * FROM items`
+      let text = `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid 
+      FROM items item`
+      if (idToOmit) {
+        text = `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid
+        FROM items item
+        WHERE item.ownerid != $1 AND item.borrowerid is NULL`
+      }
+
       try {
         const items = await postgres.query({
           text: text,
           values: idToOmit ? [idToOmit] : []
         })
+
         return items.rows
       } catch (e) {
         console.log(e)
@@ -103,14 +90,8 @@ module.exports = function(postgres) {
     async getItemsForUser(id) {
       try {
         const items = await postgres.query({
-          /**
-           *  @TODO: Advanced queries
-           *  Get all Items. Hint: You'll need to use a LEFT INNER JOIN among others
-           */
-          text: `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid, up.data as imageurl 
+          text: `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid
           FROM items item
-          INNER JOIN uploads up
-          ON up.itemid = item.id
           WHERE ownerid = $1`,
           values: [id]
         })
@@ -127,10 +108,8 @@ module.exports = function(postgres) {
            *  @TODO: Advanced queries
            *  Get all Items. Hint: You'll need to use a LEFT INNER JOIN among others
            */
-          text: `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid, up.data as imageurl 
+          text: `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid
           FROM items item
-          INNER JOIN uploads up
-          ON up.itemid = item.id 
           WHERE borrowerid = $1`,
           values: [id]
         })

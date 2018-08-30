@@ -9,7 +9,7 @@ const items = async () => {
   const args = {}
   let ctx = {
     pgResource: {
-      getItems () {
+      getItems() {
         return [MockItem]
       }
     }
@@ -20,7 +20,7 @@ const items = async () => {
 
   ctx = {
     pgResource: {
-      getItems () {
+      getItems() {
         throw 'Error'
       }
     }

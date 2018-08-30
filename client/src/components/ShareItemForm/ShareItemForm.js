@@ -174,7 +174,6 @@ class ShareItemForm extends Component {
                 this.saveItem(values, tags, addItem)
               }}
               validate={this.validate}
-              // initialValues={{}}
               render={({
                 handleSubmit,
                 pristine,

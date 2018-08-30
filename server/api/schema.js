@@ -14,7 +14,7 @@ module.exports = gql`
     id: ID!
     title: String!
     description: String!
-    imageurl: String!
+    imageurl: String
     tags: [Tag]!
     itemowner: User!
     created: Date
@@ -25,6 +25,7 @@ module.exports = gql`
     id: ID!
     email: String!
     fullname: String!
+    password: String!
     bio: String
     items: [Item]
     borrowed: [Item]
@@ -82,7 +83,7 @@ module.exports = gql`
 
     signup(user: SignUpInput!): User
 
-    login(user: LoginInput): User
+    login(user: LoginInput!): Boolean!
 
     logout: Boolean
   }

@@ -24,6 +24,7 @@ const styles = {
 class ItemCard extends Component {
   render() {
     const { classes, item } = this.props
+    console.log(classes, item)
     return (
       <div>
         <CardHeader

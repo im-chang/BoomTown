@@ -17,6 +17,7 @@ const Items = ({ classes }) => {
         >
           <ItemsContainer>
             {({ itemsData: { loading, error, items } }) => {
+              console.log(items)
               if (loading) return 'loading'
               if (error) return 'error'
               return items.map(item => (
