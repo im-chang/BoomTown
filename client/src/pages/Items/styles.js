@@ -1,10 +1,14 @@
 const styles = theme => ({
   body: {
-    paddingBottom: '5rem'
+    marginTop: '5rem',
+    marginBottom: '5rem'
+  },
+  itemCard: {
+    maxWidth: 345,
+    margin: '1rem'
   },
   Items: {
-    backgroundColor: '#212121',
-    [theme.breakpoints.up('xs')]: {}
+    backgroundColor: '#212121'
   }
 })
 

@@ -1,4 +1,7 @@
 const styles = theme => ({
+  body: {
+    height: '100vh'
+  },
   root: {
     flexGrow: 1,
     height: '100%',

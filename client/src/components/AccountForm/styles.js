@@ -22,7 +22,13 @@ const styles = theme => ({
   },
   errorMessage: {
     color: 'firebrick'
+  },
+  passwordInput: {
+    position: 'relative'
   }
+  // passwordToggle: {
+  //   position: 'inherit'
+  // }
 })
 
 export default styles

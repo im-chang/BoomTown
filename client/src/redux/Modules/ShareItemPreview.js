@@ -22,7 +22,10 @@ const initialState = {
   imageurl:
     'https://dummyimage.com/350x250/0825ff/ffffff&text=Select+Your+Image',
   created: new Date(),
-  itemowner: {}
+  itemowner: {
+    fullname: '',
+    email: ''
+  }
 }
 
 export default (state = initialState, action) => {

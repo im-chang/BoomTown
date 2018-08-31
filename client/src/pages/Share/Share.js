@@ -7,7 +7,7 @@ import styles from './styles'
 
 const Share = ({ classes }) => {
   return (
-    <div>
+    <div className={classes.body}>
       <div className={classes.SharePage}>
         <div className={classes.SharePreview}>
           <ShareItemPreview />

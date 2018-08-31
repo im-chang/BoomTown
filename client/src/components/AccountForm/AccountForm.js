@@ -89,12 +89,18 @@ class AccountForm extends Component {
                   </Field>
                 </FormControl>
                 <FormControl fullWidth className={classes.formControl}>
-                  <InputLabel htmlFor="password">Password</InputLabel>
+                  <InputLabel
+                    className={classes.passwordInput}
+                    htmlFor="password"
+                  >
+                    Password
+                  </InputLabel>
                   <Field name="password">
                     {({ input, meta }) => (
                       <div>
                         <Input id="password" type="password" {...input} />
                         <Input
+                          className={classes.passwordToggle}
                           id="passwordToggle"
                           type="checkbox"
                           onClick={() => this.handlePasswordToggle()}
@@ -137,7 +143,14 @@ class AccountForm extends Component {
                     </Typography>
                   </Grid>
                 </FormControl>
-                <Typography className={classes.errorMessage} />
+                <Typography className={classes.errorMessage}>
+                  {login.error
+                    ? 'User Authentication Error: Incorrect username or password'
+                    : ''}
+                  {signup.error
+                    ? 'User Creation Error: Email already exists'
+                    : ''}
+                </Typography>
               </form>
             )}
           />

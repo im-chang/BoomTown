@@ -20,9 +20,7 @@ const Profile = ({ classes }) => {
                   variant="display1"
                   component="h3"
                   className={classes.itemHeader}
-                >
-                  Shared Items
-                </Typography>
+                />
                 <Grid container>
                   {user.items.map(item => (
                     <Grid

@@ -198,7 +198,7 @@ class ShareItemForm extends Component {
                       return ''
                     }}
                   />
-                  <Typography variant="display1" style={{ marginTop: '2rem' }}>
+                  <Typography variant="display2">
                     Share. Borrow. Prosper.
                   </Typography>
                   <Field

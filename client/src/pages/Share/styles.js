@@ -1,13 +1,39 @@
 const styles = theme => ({
+  body: {
+    paddingTop: '3rem',
+    marginBottom: 0,
+    backgroundColor: 'white',
+    height: '100vh'
+  },
   SharePage: {
     display: 'grid',
+    backgroundColor: 'white',
+    gridGap: '3rem',
     [theme.breakpoints.up('xs')]: {
       backgroundColor: 'white'
     },
     [theme.breakpoints.up('sm')]: {
       gridTemplateColumns: '1fr 1fr',
-      backgroundColor: '#212121'
+      marginTop: '10rem',
+      marginBottom: 0,
+      margin: '2rem'
+    },
+    [theme.breakpoints.up('md')]: {
+      marginRight: '5rem',
+      marginLeft: '5rem'
+    },
+    [theme.breakpoints.up('lg')]: {
+      marginTop: '10rem',
+      margin: '20rem',
+      marginBottom: 0
+    },
+    cardContainer: {
+      height: '100%'
     }
+  },
+
+  card: {
+    width: '100%'
   },
 
   SharePreview: {

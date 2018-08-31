@@ -12,6 +12,8 @@ import Image from 'material-ui-image'
 import Avatar from '@material-ui/core/Avatar'
 import moment from 'moment'
 import styles from './style'
+import Gravatar from 'react-gravatar'
+import { Link } from 'react-router-dom'
 
 class ItemCard extends Component {
   render() {
@@ -25,18 +27,25 @@ class ItemCard extends Component {
             title={item.title}
             key={item.id}
           />
-          <CardHeader
-            avatar={
-              <Avatar aria-label="Recipe" className={classes.avatar}>
-                R
-              </Avatar>
-            }
-            title={item.itemowner.fullname}
-            subheader={moment(item.created).fromNow()}
-          />
+          <Link to={`/profile/${item.itemowner.id}`}>
+            <CardHeader
+              avatar={
+                <Gravatar
+                  className={classes.gravatar}
+                  email={item.itemowner.email}
+                />
+              }
+              title={item.itemowner.fullname}
+              subheader={moment(new Date(item.created)).fromNow()}
+              className={classes.header}
+            />
+          </Link>
           <CardContent>
             <Typography gutterBottom variant="headline" component="h2">
               {item.title}
+            </Typography>
+            <Typography component="p" className={classes.tagsText}>
+              {item.tags.map(tag => tag.title).join(', ')}
             </Typography>
             <Typography variant="caption" gutterBottom align="start" />
             <Typography gutterBottom variant="sub-heading">
