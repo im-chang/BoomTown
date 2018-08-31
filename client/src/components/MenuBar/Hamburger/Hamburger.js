@@ -6,6 +6,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert'
 import { Link } from 'react-router-dom'
 import AuthContainer from '../../../containers/AuthContainer'
 import { ViewerContext } from '../../../context/ViewerProvider'
+import Fingerprint from '@material-ui/icons/Fingerprint'
+import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew'
 
 const ITEM_HEIGHT = 48
 
@@ -51,7 +53,10 @@ class LongMenu extends React.Component {
           <ViewerContext.Consumer>
             {({ viewer }) => (
               <Link to={`/profile/${viewer.id}`}>
-                <MenuItem onClick={this.handleClose}>Your Profile</MenuItem>
+                <MenuItem onClick={this.handleClose}>
+                  <Fingerprint style={{ margin: '20px' }} />
+                  Your Profile
+                </MenuItem>
               </Link>
             )}
           </ViewerContext.Consumer>
@@ -63,7 +68,8 @@ class LongMenu extends React.Component {
                     logout.mutation()
                   }}
                 >
-                  Sign Out{' '}
+                  <PowerSettingsNew style={{ margin: '20px' }} />
+                  Sign Out
                 </MenuItem>
               )
             }}

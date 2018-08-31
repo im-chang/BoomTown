@@ -49,7 +49,7 @@ function MenuBar(props) {
             component={Link}
             to="/share"
           >
-            <Icon style={{ margin: '20px' }}>add_circle</Icon> SHARE SOMETHING
+            <Icon style={{ margin: '20px' }} /> SHARE SOMETHING
           </Button>
           <LongMenu />
         </Toolbar>

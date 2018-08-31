@@ -1,7 +1,7 @@
 const styles = theme => ({
   body: {
+    marginTop: '2rem',
     paddingTop: '3rem',
-    marginBottom: 0,
     backgroundColor: 'white',
     height: '100vh'
   },

@@ -186,7 +186,6 @@ class ShareItemForm extends Component {
                     form.reset()
                     this.handleShareReset(resetImage, resetNewItem)
                   }}
-                  id="shareItemForm"
                 >
                   <FormSpy
                     subscription={{ values: true }}
