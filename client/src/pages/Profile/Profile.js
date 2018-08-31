@@ -7,11 +7,11 @@ import { Grid, Typography } from '@material-ui/core'
 import ItemCard from './../../components/ItemCard'
 import Loading from '../../components/Loading/Loading'
 
-const Profile = ({ classes }) => {
+const Profile = ({ classes, match }) => {
   return (
     <div className={classes.body}>
       <div>
-        <ItemsContainer>
+        <ItemsContainer id={match.params.userid}>
           {({ userItemsData: { loading, error, user, viewer } }) => {
             if (loading) return <Loading />
             if (error) return 'error'
