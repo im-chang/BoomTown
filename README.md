@@ -4,7 +4,7 @@ Boomtown is an application that allows users to upload images and descriptions o
 
 # Screenshots:
 
-![boomtown screens](https://user-images.githubusercontent.com/38142960/44894084-f763ea80-aca2-11e8-8625-8a936348b064.jpg)
+![boomtown screens](https://user-images.githubusercontent.com/38142960/44894552-2aa77900-aca5-11e8-9176-d3d105417768.jpg)
 
 ## Technologies Used:
 

@@ -13,6 +13,10 @@ const styles = theme => ({
   itemCard: {
     maxWidth: 345,
     margin: '1rem'
+  },
+  shared: {
+    color: '#f9a825',
+    marginBottom: 0
   }
 })
 

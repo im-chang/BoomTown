@@ -1,11 +1,6 @@
 var strs = require('stringstream')
 
 function tagsQueryString(tags, itemid, result) {
-  /**
-   * Challenge:
-   * This function is recursive, and a little complicated.
-   * Can you refactor it to be simpler / more readable?
-   */
   const length = tags.length
   return length === 0
     ? `${result};`
@@ -110,10 +105,6 @@ module.exports = function(postgres) {
     async getBorrowedItemsForUser(id) {
       try {
         const items = await postgres.query({
-          /**
-           *  @TODO: Advanced queries
-           *  Get all Items. Hint: You'll need to use a LEFT INNER JOIN among others
-           */
           text: `SELECT item.id, item.title,item.description,item.created, item.ownerid, item.borrowerid, up.data as imageurl 
           FROM items item
           INNER JOIN uploads up
@@ -157,35 +148,10 @@ module.exports = function(postgres) {
       }
     },
     async saveNewItem({ item, image, user }) {
-      /**
-       *  @TODO: Adding a New Item
-       *
-       *  Adding a new Item to Posgtres is the most advanced query.
-       *  It requires 3 separate INSERT statements.
-       *
-       *  All of the INSERT statements must:
-       *  1) Proceed in a specific order.
-       *  2) Succeed for the new Item to be considered added
-       *  3) If any of the INSERT queries fail, any successful INSERT
-       *     queries should be 'rolled back' to avoid 'orphan' data in the database.
-       *
-       *  To achieve #3 we'll ue something called a Postgres Transaction!
-       *  The code for the transaction has been provided for you, along with
-       *  helpful comments to help you get started.
-       *
-       *  Read the method and the comments carefully before you begin.
-       */
-
       return new Promise((resolve, reject) => {
-        /**
-         * Begin transaction by opening a long-lived connection
-         * to a client from the client pool.
-         */
         postgres.connect((err, client, done) => {
           try {
-            // Begin postgres transaction
             client.query('BEGIN', err => {
-              // Convert image (file stream) to Base64
               const imageStream = image.stream.pipe(strs('base64'))
 
               let base64Str = 'data:image/*;base64,'
@@ -194,7 +160,6 @@ module.exports = function(postgres) {
               })
 
               imageStream.on('end', async () => {
-                // Image has been converted, begin saving things
                 const { title, description, tags } = item
 
                 const newItemInsert = {
@@ -206,8 +171,6 @@ module.exports = function(postgres) {
 
                 const newItem = await client.query(newItemInsert)
                 const itemid = newItem.rows[0].id
-
-                // -------------------------------
 
                 const imageUploadQuery = {
                   text:
@@ -221,15 +184,10 @@ module.exports = function(postgres) {
                   ]
                 }
                 try {
-                  // Upload image
                   await client.query(imageUploadQuery)
                 } catch (e) {
                   console.log(e)
                 }
-
-                // Generate tag relationships query (use the'tagsQueryString' helper function provided)
-                // @TODO
-                // -------------------------------
                 const tagsQuery = {
                   text: `
                     INSERT INTO itemtags(tagid, itemid) VALUES ${tagsQueryString(
@@ -245,25 +203,20 @@ module.exports = function(postgres) {
                   console.log(e)
                 }
 
-                // Commit the entire transaction!
                 client.query('COMMIT', err => {
                   if (err) {
                     throw err
                   }
-                  // release the client back to the pool
                   done()
                   resolve(newItem.rows[0])
-                  // -------------------------------
                 })
               })
             })
           } catch (e) {
-            // Something went wrong
             client.query('ROLLBACK', err => {
               if (err) {
                 throw err
               }
-              // release the client back to the pool
               done()
             })
             switch (true) {
