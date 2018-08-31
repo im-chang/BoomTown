@@ -156,7 +156,7 @@ class ShareItemForm extends Component {
   }
 
   render() {
-    const { classes, resetImage, updateNewItem, resetNewItem } = this.props
+    const { resetImage, updateNewItem, resetNewItem } = this.props
     return (
       <ItemsContainer>
         {({ addItem, tagData: { tags, loading, error } }) => {

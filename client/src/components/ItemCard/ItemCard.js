@@ -8,8 +8,6 @@ import CardMedia from '@material-ui/core/CardMedia'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { CardHeader } from '@material-ui/core'
-import Image from 'material-ui-image'
-import Avatar from '@material-ui/core/Avatar'
 import moment from 'moment'
 import styles from './style'
 import Gravatar from 'react-gravatar'
@@ -47,10 +45,7 @@ class ItemCard extends Component {
             <Typography component="p" className={classes.tagsText}>
               {item.tags.map(tag => tag.title).join(', ')}
             </Typography>
-            <Typography variant="caption" gutterBottom align="start" />
-            <Typography gutterBottom variant="sub-heading">
-              {item.description}
-            </Typography>
+            <Typography component="p">{item.description}</Typography>
           </CardContent>
           <CardActions>
             <Button variant="outlined" color="secondary">

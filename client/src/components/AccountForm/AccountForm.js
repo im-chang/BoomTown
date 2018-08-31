@@ -8,7 +8,6 @@ import React, { Component } from 'react'
 import Typography from '@material-ui/core/Typography'
 import { Form, Field } from 'react-final-form'
 import AuthContainer from '../../containers/AuthContainer'
-import validate from './helpers/validation'
 import styles from './styles'
 
 class AccountForm extends Component {
