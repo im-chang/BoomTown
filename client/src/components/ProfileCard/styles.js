@@ -1,6 +1,9 @@
 const styles = theme => ({
   profileCard: {
     width: '100%'
+  },
+  gravatar: {
+    borderRadius: 50
   }
 })
 

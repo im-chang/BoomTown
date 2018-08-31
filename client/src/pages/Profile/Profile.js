@@ -5,6 +5,7 @@ import ProfileCard from '../../components/ProfileCard/ProfileCard'
 import ItemsContainer from '../../containers/ItemsContainer'
 import { Grid, Typography } from '@material-ui/core'
 import ItemCard from './../../components/ItemCard'
+import Loading from '../../components/Loading/Loading'
 
 const Profile = ({ classes }) => {
   return (
@@ -12,7 +13,8 @@ const Profile = ({ classes }) => {
       <div>
         <ItemsContainer>
           {({ userItemsData: { loading, error, user, viewer } }) => {
-            if (loading) return 'Loading'
+            if (loading) return <Loading />
+            if (error) return 'error'
             return (
               <Grid container className={classes.root}>
                 <ProfileCard user={user} />

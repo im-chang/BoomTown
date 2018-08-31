@@ -5,6 +5,9 @@ const styles = theme => ({
   },
   card: {
     textAlign: 'left'
+  },
+  gravatar: {
+    borderRadius: 50
   }
 })
 

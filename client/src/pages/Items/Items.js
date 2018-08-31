@@ -4,6 +4,7 @@ import ItemsContainer from '../../containers/ItemsContainer'
 import styles from './styles'
 import ItemCard from '../../components/ItemCard'
 import { Grid } from '@material-ui/core'
+import Loading from '../../components/Loading/Loading'
 
 const Items = ({ classes }) => {
   return (
@@ -17,7 +18,7 @@ const Items = ({ classes }) => {
         >
           <ItemsContainer>
             {({ itemsData: { loading, error, items } }) => {
-              if (loading) return 'loading'
+              if (loading) return <Loading />
               if (error) return 'error'
               return items.map(item => (
                 <Grid
